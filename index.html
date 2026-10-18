@@ -185,7 +185,7 @@
         SPECIAL_SHIFTS: 'specialShifts_v5'
     };
 
-    // ---------- 人員分組（最新名單）----------
+    // ---------- 人員分組 ----------
     const PERSON_GROUPS = {
         // 管理層
         '王冠智': '組長',
@@ -244,7 +244,8 @@
         '黃祐辰': '火力班'
     };
 
-    const CATEGORY_LIST = ['管理層', 'PCC', 'AV小組', 'IFE小組', '座椅小組', '火力班', 'APG'];
+    // ★ 類別順序：管理層 → 火力班 → APG → AV小組 → 座椅小組 → IFE小組 → PCC
+    const CATEGORY_LIST = ['管理層', '火力班', 'APG', 'AV小組', '座椅小組', 'IFE小組', 'PCC'];
 
     function getPersonGroup(name) {
         return PERSON_GROUPS[name] || 'APG';
