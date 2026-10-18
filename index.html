@@ -240,10 +240,10 @@
         '林俊逸': '座椅小組'
     };
 
-    const CATEGORY_LIST = ['管理層', 'PCC', 'AV小組', 'IFE小組', '座椅小組', '其他'];
+    const CATEGORY_LIST = ['管理層', 'PCC', 'AV小組', 'IFE小組', '座椅小組', 'APG'];
 
     function getPersonGroup(name) {
-        return PERSON_GROUPS[name] || '技術員';
+        return PERSON_GROUPS[name] || 'APG';
     }
 
     function getCategoryFromGroup(group) {
@@ -252,7 +252,7 @@
         if (group.startsWith('AV小組')) return 'AV小組';
         if (group.startsWith('IFE')) return 'IFE小組';
         if (group.startsWith('座椅小組')) return '座椅小組';
-        return '其他';
+        return 'APG';
     }
 
     function getGroupBadgeClass(group) {
@@ -277,7 +277,7 @@
             case '座椅小組':
                 return 'bg-secondary';
             default:
-                return 'bg-light text-dark';
+                return 'bg-dark';
         }
     }
 
@@ -600,7 +600,7 @@
         document.getElementById('selectedPersonInfo').innerHTML = `<h5><i class="bi bi-person-check"></i> 查詢：${name}</h5>`;
         document.getElementById('selectedPersonInfo').style.display='block';
         document.getElementById('personNameDisplay').textContent=name;
-        let group = person.group || '技術員';
+        let group = person.group || 'APG';
         let catBadge = document.getElementById('personCategoryDisplay');
         catBadge.textContent = group;
         catBadge.className = 'badge ' + getGroupBadgeClass(group);
@@ -632,7 +632,7 @@
         if(!name) return;
         let person = scheduleData.find(p=>p.name===name);
         if(!person) return;
-        let lines = [`${name} (${person.group || '技術員'}) - ${scheduleYear}年${scheduleMonth}月班表`,'日期\t星期\t班型\t說明\t備註'];
+        let lines = [`${name} (${person.group || 'APG'}) - ${scheduleYear}年${scheduleMonth}月班表`,'日期\t星期\t班型\t說明\t備註'];
         const daysInMonth = new Date(scheduleYear, scheduleMonth, 0).getDate();
         for(let d=1;d<=daysInMonth;d++) {
             let sd = person.shifts[d];
@@ -937,8 +937,8 @@
         
         // 自動選擇第一個類別的第一個人
         let catSel = document.getElementById('categorySelect');
-        if (catSel.options.length > 1) {
-            catSel.selectedIndex = 1;
+        if (catSel.options.length > 0) {
+            catSel.selectedIndex = 0;
             updatePersonSelect();
         }
         let psel = document.getElementById('personSelect');
@@ -1081,7 +1081,6 @@
             updatePersonSelect(); 
             updateWeekStartSelector(); 
             document.getElementById('resultSection').style.display='block'; 
-            // 自動選第一類與第一人
             let catSel = document.getElementById('categorySelect');
             if (catSel.options.length > 0) catSel.selectedIndex = 0;
             updatePersonSelect();
