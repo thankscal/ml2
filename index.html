@@ -187,6 +187,7 @@
 
     // ---------- 人員分組（最新名單）----------
     const PERSON_GROUPS = {
+        // 管理層
         '王冠智': '組長',
         '段任唐': '執勤組長',
         '張子彥': '管制長',
@@ -205,11 +206,13 @@
         '吳經緯': 'APG-領工',
         '李偉棋': 'APG-領工',
         '陳建志': 'APG-領工',
-        '曾宥翔': 'APG-領工',
-        '劉家男': 'APG-領工',
+        '曾宥翔': '火力班',
+        '劉家男': '火力班-領工',
         '蔡明錫': 'APG-領工',
         '藍文璘': 'APG-領工',
+        // PCC
         '郭銘泰': 'PCC',
+        // AV小組
         '徐文旋': 'AV小組-領班',
         '江俊沅': 'AV小組-領工',
         '洪德傳': 'AV小組',
@@ -218,6 +221,7 @@
         '高旭毅': 'AV小組',
         '鄭凱鴻': 'AV小組',
         '王臆傑': 'AV小組',
+        // IFE小組
         '俞淡榮': 'IFE-領工',
         '王永泰': 'IFE小組',
         '周建成': 'IFE小組',
@@ -225,15 +229,22 @@
         '方登照': 'IFE小組',
         '林俊傑': 'IFE小組',
         '李亞峻': 'IFE小組',
+        // 座椅小組
         '張舜元': '座椅小組-領工',
         '陳叔釗': '座椅小組',
         '武文中': '座椅小組',
         '林永昌': '座椅小組',
         '謝明均': '座椅小組',
-        '林俊逸': '座椅小組'
+        '林俊逸': '座椅小組',
+        // 火力班
+        '呂豐達': '火力班',
+        '張峻諺': '火力班',
+        '林聖翔': '火力班',
+        '朱立成': '火力班',
+        '黃祐辰': '火力班'
     };
 
-    const CATEGORY_LIST = ['管理層', 'PCC', 'AV小組', 'IFE小組', '座椅小組', 'APG'];
+    const CATEGORY_LIST = ['管理層', 'PCC', 'AV小組', 'IFE小組', '座椅小組', '火力班', 'APG'];
 
     function getPersonGroup(name) {
         return PERSON_GROUPS[name] || 'APG';
@@ -245,6 +256,7 @@
         if (group.startsWith('AV小組')) return 'AV小組';
         if (group.startsWith('IFE')) return 'IFE小組';
         if (group.startsWith('座椅小組')) return '座椅小組';
+        if (group.startsWith('火力班')) return '火力班';
         return 'APG';
     }
 
@@ -269,6 +281,9 @@
             case '座椅小組-領工':
             case '座椅小組':
                 return 'bg-secondary';
+            case '火力班-領工':
+            case '火力班':
+                return 'bg-danger';
             default:
                 return 'bg-dark';
         }
@@ -367,7 +382,6 @@
             let sortedSpecial=[...specialShiftsOfCurrentPerson].sort();
             for(let sp of sortedSpecial) addShiftItem(sp,true);
         }
-        // 不再強制隱藏面板，保留使用者開關狀態
     }
 
     function updateScheduleWithNewColors() {
@@ -1063,7 +1077,6 @@
         addFloatCopyButton();
         updateCategorySelect();
         
-        // ★ 修正：改用 'block' 判斷，並切換顯示
         const togglePanel=()=>{ 
             let panel=document.getElementById('colorSettingsSection'); 
             if(panel.style.display==='block') {
@@ -1109,4 +1122,4 @@
     });
 </script>
 </body>
-    </html>
+</html>
