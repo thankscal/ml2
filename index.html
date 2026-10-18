@@ -187,11 +187,9 @@
 
     // ---------- 人員分組（最新名單）----------
     const PERSON_GROUPS = {
-        // 管理層：組長、執勤組長、管制長、APG-領班、APG-領工
         '王冠智': '組長',
         '段任唐': '執勤組長',
         '張子彥': '管制長',
-        // APG-領班
         '蔡正淮': 'APG-領班',
         '程冠銘': 'APG-領班',
         '張仕陽': 'APG-領班',
@@ -200,7 +198,6 @@
         '吳銘政': 'APG-領班',
         '洪溫道': 'APG-領班',
         '范勝棋': 'APG-領班',
-        // APG-領工
         '黃喜鍊': 'APG-領工',
         '鄒學嘉': 'APG-領工',
         '劉竹均': 'APG-領工',
@@ -212,9 +209,7 @@
         '劉家男': 'APG-領工',
         '蔡明錫': 'APG-領工',
         '藍文璘': 'APG-領工',
-        // PCC
         '郭銘泰': 'PCC',
-        // AV小組
         '徐文旋': 'AV小組-領班',
         '江俊沅': 'AV小組-領工',
         '洪德傳': 'AV小組',
@@ -223,7 +218,6 @@
         '高旭毅': 'AV小組',
         '鄭凱鴻': 'AV小組',
         '王臆傑': 'AV小組',
-        // IFE小組
         '俞淡榮': 'IFE-領工',
         '王永泰': 'IFE小組',
         '周建成': 'IFE小組',
@@ -231,7 +225,6 @@
         '方登照': 'IFE小組',
         '林俊傑': 'IFE小組',
         '李亞峻': 'IFE小組',
-        // 座椅小組
         '張舜元': '座椅小組-領工',
         '陳叔釗': '座椅小組',
         '武文中': '座椅小組',
@@ -374,7 +367,7 @@
             let sortedSpecial=[...specialShiftsOfCurrentPerson].sort();
             for(let sp of sortedSpecial) addShiftItem(sp,true);
         }
-        document.getElementById('colorSettingsSection').style.display='none';
+        // 不再強制隱藏面板，保留使用者開關狀態
     }
 
     function updateScheduleWithNewColors() {
@@ -849,7 +842,6 @@
         
         const daysInMonth = new Date(scheduleYear, scheduleMonth, 0).getDate();
         
-        // 讀取預設班表（第 5 行，索引 4）
         const defaultRowIndex = 4;
         let defaultShifts = {};
         if (json[defaultRowIndex]) {
@@ -864,7 +856,6 @@
             }
         }
         
-        // 逐列解析人員
         for (let r = 3; r < json.length; r++) {
             let row = json[r];
             if (!row || row.length < 3) continue;
@@ -935,7 +926,6 @@
         hideLoading();
         document.getElementById('fileInfo').style.display = 'none';
         
-        // 自動選擇第一個類別的第一個人
         let catSel = document.getElementById('categorySelect');
         if (catSel.options.length > 0) {
             catSel.selectedIndex = 0;
@@ -991,7 +981,6 @@
         }catch(e){return null;}
     }
 
-    // 更新類別下拉
     function updateCategorySelect() {
         const sel = document.getElementById('categorySelect');
         sel.innerHTML = '';
@@ -1003,7 +992,6 @@
         });
         sel.onchange = () => {
             updatePersonSelect();
-            // 清空顯示
             document.getElementById('selectedPersonInfo').style.display = 'none';
             document.getElementById('personInfoCard').style.display = 'none';
             document.getElementById('personWeeklyCalendar').style.display = 'none';
@@ -1012,7 +1000,6 @@
         };
     }
 
-    // 更新人員下拉（依類別過濾）
     function updatePersonSelect() {
         const catSel = document.getElementById('categorySelect');
         const cat = catSel ? catSel.value : '';
@@ -1076,6 +1063,18 @@
         addFloatCopyButton();
         updateCategorySelect();
         
+        // ★ 修正：改用 'block' 判斷，並切換顯示
+        const togglePanel=()=>{ 
+            let panel=document.getElementById('colorSettingsSection'); 
+            if(panel.style.display==='block') {
+                panel.style.display='none';
+            } else {
+                panel.style.display='block';
+            }
+        };
+        document.getElementById('toggleColorSettingsBtn').onclick=togglePanel; 
+        document.getElementById('toggleColorSettingsBtn2').onclick=togglePanel;
+        
         if(loadFromLocalStorage()){ 
             updateCategorySelect();
             updatePersonSelect(); 
@@ -1104,12 +1103,10 @@
         document.getElementById('downloadImageBtn').onclick=downloadScheduleAsImage;
         document.getElementById('wallpaperBtn').onclick=generateMobileWallpaper;
         document.getElementById('summaryToggleBtn').onclick=()=>{ isSummaryCollapsed=!isSummaryCollapsed; let cont=document.getElementById('shiftSummaryContent'); if(isSummaryCollapsed) cont.classList.add('collapsed'); else cont.classList.remove('collapsed'); };
-        const togglePanel=()=>{ let panel=document.getElementById('colorSettingsSection'); if(panel.style.display==='none') panel.style.display='block'; else panel.style.display='none'; };
-        document.getElementById('toggleColorSettingsBtn').onclick=togglePanel; document.getElementById('toggleColorSettingsBtn2').onclick=togglePanel;
         document.getElementById('saveColorsBtn').onclick=()=>{ saveColorSettingsToLocal(); alert('顏色已儲存'); };
         document.getElementById('resetColorsBtn').onclick=()=>{ if(confirm('重設所有班型顏色為預設值？')){ shiftColors=JSON.parse(JSON.stringify(defaultShiftColors)); for(let s of globalSpecialShifts) shiftColors[s]={...SPECIAL_DEFAULT_COLOR}; saveColorSettingsToLocal(); showSelectedPersonSchedule();} };
         document.getElementById('personSelect').onchange=()=>showSelectedPersonSchedule();
     });
 </script>
 </body>
-</html>
+    </html>
